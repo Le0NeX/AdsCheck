@@ -1,117 +1,100 @@
-#include "Source.h"
+ï»¿#include "Source.h"
 
 
 KufoCheck::KufoCheck() {
-	URL_ONE = L"https://www.kufar.by/l/r~mogilev/kompyuternye-uslugi";
-	URL_TWO = L"https://www.kufar.by/l/r~mogilev/remont-tehniki-elektroniki?srel=10";
-	FILE = L"downloadedPage.txt";
-	urlDownResult = NULL;
-	adsFound = 0;
-	adsClassSearch = "XS_QS\">";
-	adsClassEnd = '<';
-	adsTitle = L"Êîìïüþòåðíûé ìàñòåð, êîìïüþòåðíûå óñëóãè ñ âûåçäîì";
-	titleCheck = L"";
-	stream = ' ';
-	symbolFound = 0;
-	classSearchResult = false;
-	titleCopyResult = false;
-	positionSearchResult = false;
-	titlePrintResult = false;
+  URL_ONE = L"https://www.kufar.by/l/r~mogilev/kompyuternye-uslugi";
+  URL_TWO = L"https://www.kufar.by/l/r~mogilev/remont-tehniki-elektroniki?srel=10";
+  FILE = L"downloadedPage.txt";
+  url_down_result = NULL;
+  ads_found = 0;
+  ads_class_search = "XS_QS\">";
+  ads_class_end = '<';
+  ads_title = L"ÐšÐ¾Ð¼Ð¿ÑŒÑŽÑ‚ÐµÑ€Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑ‚ÐµÑ€, ÐºÐ¾Ð¼Ð¿ÑŒÑŽÑ‚ÐµÑ€Ð½Ñ‹Ðµ ÑƒÑÐ»ÑƒÐ³Ð¸ Ñ Ð²Ñ‹ÐµÐ·Ð´Ð¾Ð¼";
+  title_check = L"";
+  stream = ' ';
+  symbol_found = 0;
+  class_search_result = false;
+  title_copy_result = false;
+  position_search_result = false;
+  title_print_result = false;
 }
 
-const HRESULT KufoCheck::urlDownFile(const wchar_t* URL_ONE, const wchar_t* FILE) {
+KufoCheck::~KufoCheck() {}
 
-	HRESULT urlDownResult = URLDownloadToFile(NULL, URL_ONE, FILE, 0, NULL);
+HRESULT KufoCheck::UrlDownFile(const wchar_t* url_one, const wchar_t* file) {
 
-	if (urlDownResult == S_OK) {
-		messagePrint("The download started syccessfuly.");
+  HRESULT url_down_result = URLDownloadToFile(NULL, url_one, file, 0, NULL);
+    if (url_down_result == S_OK) {
+	MessagePrint("The download started syccessfuly.");
+	return S_OK;
 
-		return S_OK;
+  } else if (url_down_result == INET_E_DOWNLOAD_FAILURE) {
+	MessagePrint("The specified resource or callback interface was invalid.");
+	return INET_E_DOWNLOAD_FAILURE;
 
-	} else if (urlDownResult == INET_E_DOWNLOAD_FAILURE) {
-		messagePrint("The specified resource or callback interface was invalid.");
-
-		return INET_E_DOWNLOAD_FAILURE;
-
-	} else if (urlDownResult == E_OUTOFMEMORY) {
-		messagePrint("The buffer length is invalid, or there is insufficient memory to complete the operation.");
-
-		return E_OUTOFMEMORY;
-	}
-	return urlDownResult;
+  } else if (url_down_result == E_OUTOFMEMORY) {
+	MessagePrint("The buffer length is invalid, or there is insufficient memory to complete the operation.");
+	return E_OUTOFMEMORY;
+  }
+  return url_down_result;
 }
 
-void KufoCheck::streamValue(const wchar_t* FILE) {
-	std::wifstream inFile(FILE, std::ios::in);
-	inFile.imbue(std::locale("ru_RU.UTF-8"));
+void KufoCheck::StreamValue(const wchar_t* file) {
+  std::wifstream in_file(file, std::ios::in);
+  in_file.imbue(std::locale("ru_RU.UTF-8"));
 
-	if (inFile.is_open()) {
-
-		while (!inFile.eof() && !getPositionSearchResult()) {
-			setStream(inFile.get());
-			setClassSearchResult(classSearch(getClassSearchResult(), getSymbolFound(), getAdsClassSearch(), getStream()));
-			setTitleCopyResult(createTitleCopy(getClassSearchResult(), getStream(), getAdsClassEnd()));
-			setAdsPositionSearch(adsPositionSearch(getTitleCopyResult(), getAdsTitle(), getAdsTitleCheck()));
-		}
-		inFile.close();
+  if (in_file.is_open()) {
+    while (!in_file.eof() && !GetPositionSearchResult()) {
+      SetStream(in_file.get());
+	  SetClassSearchResult(ClassSearch(GetAdsClassSearch(), GetStream()));
+	  SetTitleCopyResult(CreateTitleCopy(GetStream(), GetAdsClassEnd()));
+	  SetAdsPositionSearch(AdsPositionSearch(GetAdsTitle(), GetAdsTitleCheck()));
 	}
-	else { messagePrint("File not opened. ", inFile.exceptions()); }
+    in_file.close();
+  } else {
+    MessagePrint("File not opened. ", in_file.exceptions());
+  }
 }
 
-const bool KufoCheck::classSearch(const bool& classSearchResult, const int& symbolFound, const std::string& adsClassSearch, const wchar_t& stream)
-{
-	if (!classSearchResult)
-	{
-		for (; symbolFound < adsClassSearch.length();) {
-			if (stream == adsClassSearch[symbolFound]) {
-
-				setSymbolFound(+1);
-				return false;
-			}
-			else {
-				setSymbolFound();//Variable symbolCount equals 0.
-				return false;
-			}
-		}
-		setAdsFound(+1);
+bool KufoCheck::ClassSearch(const std::string& ads_class_search, const wchar_t stream) {
+  if (!GetClassSearchResult()) {
+	for (; GetSymbolFound() < ads_class_search.length();) {
+      if (stream == ads_class_search[GetSymbolFound()]) {
+		SetSymbolFound(+1);
+		return false;
+	  } else {
+		SetSymbolFound();//Variable symbolCount equals 0.
+		return false;
+	  }
 	}
-	setSymbolFound();//Variable symbolCount equals 0.
-
-	return true;
+	SetAdsFound(+1);
+  }
+  SetSymbolFound();//Variable symbolCount equals 0.
+  return true;
 }
 
-const bool KufoCheck::createTitleCopy(const bool& classSearchResult, const wchar_t& stream, const char& adsClassEnd)
-{
-	if (classSearchResult)
-	{
-		if (stream != adsClassEnd)
-		{
-			setTitleCheck(stream);
-		}
-		else
-		{
-			setClassSearchResult(false);
-			return true;
-		}
+bool KufoCheck::CreateTitleCopy(const wchar_t stream, const char ads_class_end) {
+  if (GetClassSearchResult()) {
+    if (stream != ads_class_end) {
+	  SetTitleCheck(stream);
+	} else {
+	  SetClassSearchResult(false);
+	  return true;
 	}
-	return false;
+  }
+  return false;
 }
 
-const bool KufoCheck::adsPositionSearch(const bool& titleCopyResult, const std::wstring& adsTitle, const std::wstring& adsTitleCheck)
-{
-	if (titleCopyResult)
-	{
-		if (adsTitle == adsTitleCheck)
-		{
-			messagePrint("Your ads on the: ", getAdsFound(), " spot.");
-			return true;
-		}
-		else
-		{
-			setTitleCheck();//""
-			setTitleCopyResult(false);
-		}
+bool KufoCheck::AdsPositionSearch(const std::wstring& ads_title, const std::wstring& ads_title_check) {
+  if (GetTitleCopyResult()) {
+	if (ads_title == ads_title_check) {
+	  MessagePrint("Your ads on the: ", GetAdsFound(), " spot.");
+	  return true;
+	} else {
+	  SetTitleCheck();//""
+	  SetTitleCopyResult(false);
 	}
-	//PlaySound(TEXT("adsKomputerHelpNotFound.wav"), NULL, SND_FILENAME);
-	return false;
+  }
+  //PlaySound(TEXT("adsKomputerHelpNotFound.wav"), NULL, SND_FILENAME);
+  return false;
 }

@@ -8,61 +8,119 @@
 #include <iostream>
 #include <mmsystem.h>
 
+
 class KufoCheck {
 public:
-	KufoCheck();
+  KufoCheck();
+ ~KufoCheck();
 
-	const wchar_t* getURL_ONE() { return this->URL_ONE; }
-	const wchar_t* getURL_TWO() { return this->URL_TWO; }
-	const wchar_t* getFile() { return this->FILE; }
-	const int getSymbolFound() { return this->symbolFound; }
-	const wchar_t& getStream() { return this->stream; }
-	const std::wstring& getAdsTitle() { return this->adsTitle; }
-	const std::wstring& getAdsTitleCheck() { return this->titleCheck; }
-	const std::string& getAdsClassSearch() { return this->adsClassSearch; }
-	const bool& getClassSearchResult() { return this->classSearchResult; }
-	const bool& getTitleCopyResult() { return this->titleCopyResult; }
-	const char& getAdsClassEnd() { return this->adsClassEnd; }
-	const int& getAdsFound() { return this->adsFound; }
-	const bool& getPositionSearchResult() { return this->positionSearchResult; }
+ //This is getters.
+  const wchar_t* GetUrlOne() {
+	return this->URL_ONE;
+  }
+  const wchar_t* GetUrlTwo() {
+	return this->URL_TWO;
+  }
+  const wchar_t* GetFile() {
+	return this->FILE;
+  }
+  const int GetSymbolFound() {
+	return this->symbol_found;
+  }
+  const wchar_t GetStream() {
+	return this->stream;
+  }
+  const std::wstring& GetAdsTitle() {
+	return this->ads_title;
+  }
+  const std::wstring& GetAdsTitleCheck() {
+	return this->title_check;
+  }
+  const std::string& GetAdsClassSearch() {
+	return this->ads_class_search;
+  }
+  const bool GetClassSearchResult() {
+	return this->class_search_result;
+  }
+  const bool GetTitleCopyResult() {
+	return this->title_copy_result;
+  }
+  const char GetAdsClassEnd() {
+	return this->ads_class_end;
+  }
+  const int GetAdsFound() {
+	return this->ads_found;
+  }
+  const bool GetPositionSearchResult() {
+	return this->position_search_result;
+  }
 
-	void setUrlDownFile(const HRESULT& urlDownResult) { this->urlDownResult = urlDownResult; }
-	void setAdsFound(const int& value) { this->adsFound += value; }
-	void setStream(const wchar_t& stream) { this->stream = stream; }
-	void setSymbolFound(const int& symbolFound) { this->symbolFound += symbolFound; }
-	void setClassSearchResult(const bool& classSearchResult) { this->classSearchResult = classSearchResult; }
-	void setTitleCopyResult(const bool& titleCopyResult) { this->titleCopyResult = titleCopyResult; }
-	void setAdsPositionSearch(const bool& positionSearchResult) { this->positionSearchResult = positionSearchResult; }
-	void setTitlePrintResult(const bool& titlePrintResult) { this->titlePrintResult = titlePrintResult; }
-	void setTitleCheck(const wchar_t& symbol) { this->titleCheck += symbol; }
-	
-	void setSymbolFound() { this->symbolFound = 0; }
-	void setTitleCheck() { this->titleCheck = L""; }
+  //Thiss is setters.
+  void SetUrlDownFile(const HRESULT& url_down_result) {
+	this->url_down_result = url_down_result; }
+  void SetAdsFound(const int value) {
+	this->ads_found += value;
+  }
+  void SetStream(const wchar_t stream) {
+	this->stream = stream;
+  }
+  void SetSymbolFound(const int symbol_found) {
+	this->symbol_found += symbol_found;
+  }
+  void SetClassSearchResult(const bool class_search_result) {
+	this->class_search_result = class_search_result;
+  }
+  void SetTitleCopyResult(const bool title_copy_result) {
+	this->title_copy_result = title_copy_result;
+  }
+  void SetAdsPositionSearch(const bool position_search_result) {
+	this->position_search_result = position_search_result;
+  }
+  void SetTitlePrintResult(const bool title_print_result) {
+	this->title_print_result = title_print_result;
+  }
+  void SetTitleCheck(const wchar_t symbol) {
+	this->title_check += symbol;
+  }
+  void SetSymbolFound() {
+	this->symbol_found = 0;
+  }
+  void SetTitleCheck() {
+	this->title_check = L"";
+  }
 
-	const HRESULT urlDownFile(const wchar_t* URL_ONE, const wchar_t* FILE);
-	void streamValue(const wchar_t* FILE);
-	const bool classSearch(const bool& classSearchResult, const int& symbolFound, const std::string& adsClassSearch, const wchar_t& stream);
-	const bool createTitleCopy(const bool& classSearchResult, const wchar_t& stream, const char& adsClassEnd);
-	void messagePrint(const std::string& message) { std::cout << message << std::endl; }
-	void messagePrint(const std::string& message, const int& value) { std::cout << message << value << std::endl; }
-	void messagePrint(const std::string& messageOne, const int& value, const std::string& messageTwo) { std::cout << messageOne << value << messageTwo << std::endl; }
-	void messagePrint(const wchar_t& symbol) { std::wcout << symbol; }
-	const bool adsPositionSearch(const bool& titleCopyResult, const std::wstring& adsTitle, const std::wstring& adsTitleCheck);
+  HRESULT UrlDownFile(const wchar_t* url_one, const wchar_t* file);
+  void StreamValue(const wchar_t* file);
+  bool ClassSearch(const std::string& ads_class_search, const wchar_t stream);
+  bool CreateTitleCopy(const wchar_t stream, const char ads_class_end);
+  bool AdsPositionSearch(const std::wstring& ads_title, const std::wstring& ads_title_check);
+  void MessagePrint(const std::string& message) {
+	std::cout << message << '\n';
+  }
+  void MessagePrint(const std::string& message, const int value) {
+	std::cout << message << value << '\n';
+  }
+  void MessagePrint(const std::string& message_one, const int value, const std::string& message_two) {
+	std::cout << message_one << value << message_two << '\n';
+  }
+  void MessagePrint(const wchar_t symbol) {
+	std::wcout << symbol;
+  }
 
 private:
-	const wchar_t* URL_ONE;
-	const wchar_t* URL_TWO;
-	const wchar_t* FILE;
-	HRESULT urlDownResult;
-	int adsFound;
-	std::string adsClassSearch;
-	char adsClassEnd;
-	std::wstring adsTitle;
-	std::wstring titleCheck;
-	wchar_t stream;
-	int symbolFound;
-	bool classSearchResult;
-	bool titleCopyResult;
-	bool positionSearchResult;
-	bool titlePrintResult;
+  const wchar_t* URL_ONE;
+  const wchar_t* URL_TWO;
+  const wchar_t* FILE;
+  HRESULT url_down_result;
+  int ads_found;
+  std::string ads_class_search;
+  char ads_class_end;
+  std::wstring ads_title;
+  std::wstring title_check;
+  wchar_t stream;
+  int symbol_found;
+  bool class_search_result;
+  bool title_copy_result;
+  bool position_search_result;
+  bool title_print_result;
 };

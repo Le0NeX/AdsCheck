@@ -1,15 +1,21 @@
 #include "Source.h"
 
+
 int main() {
-	KufoCheck kc;
+  KufoCheck kc;
 
-	//Check first link
-	kc.setUrlDownFile(kc.urlDownFile(kc.getURL_ONE(), kc.getFile()));
-	kc.streamValue(kc.getFile());
-	
-	//Check Second link
-	kc.setUrlDownFile(kc.urlDownFile(kc.getURL_TWO(), kc.getFile()));
-	kc.streamValue(kc.getFile());
+  while (true) {
+    // Check first link
+    kc.SetUrlDownFile(kc.UrlDownFile(kc.GetUrlOne(), kc.GetFile()));
+    kc.StreamValue(kc.GetFile());
 
-	return 0;
+    kc = KufoCheck();  // Run default constructor
+
+    // Check Second link
+    kc.SetUrlDownFile(kc.UrlDownFile(kc.GetUrlTwo(), kc.GetFile()));
+    kc.StreamValue(kc.GetFile());
+
+    Sleep(3600000);
+  }
+  return 0;
 }
