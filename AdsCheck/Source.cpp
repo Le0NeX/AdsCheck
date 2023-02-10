@@ -11,31 +11,33 @@ KufoCheck::KufoCheck() {
   ads_class_search = "XS_QS\">";
   ads_class_end = '<';
   ads_title = L"Компьютерный мастер, компьютерные услуги с выездом";
-  tmp = L"";
   title_check = L"";
   stream = ' ';
   symbol_found = 0;
-  lpcwstr_tmp = nullptr;
-  komp_help_not_found = nullptr;
-  repair_comp_not_found = nullptr;
   class_search_result = false;
   title_copy_result = false;
   position_search_result = false;
   title_print_result = false;
+  sounds_names = {L"sorry_lord.wav",
+                  L"ads_in_section.wav",
+                  L"computer_help.wav",
+                  L"repair_computers.wav",
+                  L"needs_updating.wav",
+                  L"current_position.wav",
+                  L"one.wav",
+                  L"two.wav",
+                  L"three.wav",
+                  L"four.wav",
+                  L"five.wav",
+                  L"six.wav",
+                  L"seven.wav",
+                  L"eight.wav",
+                  L"nine.wav",
+                  L"ten_or_more.wav"
+  };
 }
 
 KufoCheck::~KufoCheck() {}
-
-bool KufoCheck::PlaySpeak(const LPCWSTR& sound_name) { 
-  PlaySound(sound_name, NULL, SND_FILENAME);
-  return true;
-}
-
-LPCWSTR KufoCheck::Convert(const std::string& str) {
-  SetTmp(std::wstring(str.begin(), str.end()));
-  SetLpcwstrTmp(GetTmp().c_str());
-  return GetLpcwstrTmp();
-}
 
 HRESULT KufoCheck::UrlDownFile(const wchar_t* url_one, const wchar_t* file) {
 
@@ -65,7 +67,7 @@ void KufoCheck::StreamValue(const wchar_t* file) {
 	    SetClassSearchResult(ClassSearch(GetAdsClassSearch(), GetStream()));
 	    SetTitleCopyResult(CreateTitleCopy(GetStream(), GetAdsClassEnd()));
 	    SetAdsPositionSearch(AdsPositionSearch(GetAdsTitle(), GetAdsTitleCheck()));
-      SetSayPosition(SayPosition(GetAdsFound(), GetSectionName()));
+      SayPosition(GetAdsFound(), GetSectionName());
 	  }
     in_file.close();
   } else {
@@ -110,6 +112,7 @@ bool KufoCheck::AdsPositionSearch(const std::wstring& ads_title, const std::wstr
       MessagePrint(" to be on the: ");
       MessagePrint(GetAdsFound());
       MessagePrint(" position.\n");
+      SayPosition(GetAdsFound(), GetSectionName());
 	    return true;
 	  } else {
 	    SetTitleCheck();//""
@@ -119,44 +122,34 @@ bool KufoCheck::AdsPositionSearch(const std::wstring& ads_title, const std::wstr
   return false;
 }
 
-bool KufoCheck::SayPosition(const int value, const char* str) {
+void KufoCheck::SayPosition(const int value, const char* section) {
   if (GetPositionSearchResult()) {
-          switch (value) {
-            case 0:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 1:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 2:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 3:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 4:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 5:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 6:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 7:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 8:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 9:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-            case 10:
-              PlaySpeak(GetLpcwstrTmp());
-              break;
-          }
-  
+    if (value > 4) {
+      PlaySound(GetSoundsNames().at(0), NULL, SND_FILENAME);
+      PlaySound(GetSoundsNames().at(1), NULL, SND_FILENAME);
+      
+      if (section == "Services the computers") { PlaySound(GetSoundsNames().at(2), NULL, SND_FILENAME);
+      } else if (section == "Computers repair") { PlaySound(GetSoundsNames().at(3), NULL, SND_FILENAME);
+      }
+      PlaySound(GetSoundsNames().at(4), NULL, SND_FILENAME);
+      PlaySound(GetSoundsNames().at(5), NULL, SND_FILENAME);
+
+      switch (value) {
+        case 5: PlaySound(GetSoundsNames().at(10), NULL, SND_FILENAME);
+          break;
+        case 6: PlaySound(GetSoundsNames().at(11), NULL, SND_FILENAME);
+          break;
+        case 7: PlaySound(GetSoundsNames().at(12), NULL, SND_FILENAME);
+          break;
+        case 8: PlaySound(GetSoundsNames().at(13), NULL, SND_FILENAME);
+          break;
+        case 9: PlaySound(GetSoundsNames().at(14), NULL, SND_FILENAME);
+          break;
+        case 10: PlaySound(GetSoundsNames().at(15), NULL, SND_FILENAME);
+          break;
+      }
+    } else if(value == 0) {
+
+    }
   }
-  return false;
 }
